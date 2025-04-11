@@ -31,7 +31,9 @@
         <thead>
           <tr class="bg-gray-100">
             <th class="p-4 text-center">
-              <input type="checkbox" id="select-all" class="h-5 w-5">
+                <label>
+                    <input type="checkbox" id="select-all" class="h-5 w-5">
+                </label>
             </th>
             <th class="p-4 text-left">Título</th>
             <th class="p-4 text-left">Descrição</th>
@@ -41,7 +43,9 @@
           {% for curso in page_obj %}
           <tr class="border-b hover:bg-gray-50">
             <td class="p-4 text-center">
-              <input type="checkbox" name="curso_ids" value="{{ curso.id }}" class="h-5 w-5">
+              <label>
+                  <input type="checkbox" name="curso_ids" value="{{ curso.id }}" class="h-5 w-5">
+              </label>
             </td>
             <td class="p-4">
               <a href="{% url 'ver_curso' curso.id %}" class="text-blue-600 hover:underline font-medium">
