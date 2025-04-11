@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
+from django.contrib import messages
+
 from api.models import Curso, Aula
 
 def painel_administrativo(request):
@@ -72,8 +74,6 @@ def criar_aula(request):
     cursos = Curso.objects.all()
 
     if request.method == 'POST':
-        print(request.POST.dict())
-
         title = request.POST.get('title')
         description = request.POST.get('description')
         content = request.POST.get('content')
@@ -82,6 +82,26 @@ def criar_aula(request):
 
         curso = Curso.objects.get(id=curso_id) if curso_id else None
 
+        # Validação
+        if curso:
+            # Aula faz parte de um curso
+            if not order:
+                messages.error(request, 'O campo "ordem" é obrigatório quando a aula pertence a um curso.')
+                return render(request, 'administrativo/criar_aula.html', {'cursos': cursos})
+
+            try:
+                last_aula = Aula.objects.filter(curso=curso).order_by('-order').first()
+                expected_order = (last_aula.order + 1) if last_aula else 1
+
+                if int(order) != expected_order:
+                    messages.error(request, f'A ordem da nova aula deve ser {expected_order}.')
+                    return render(request, 'administrativo/criar_aula.html', {'cursos': cursos})
+
+            except ValueError:
+                messages.error(request, 'A ordem deve ser um número inteiro válido.')
+                return render(request, 'administrativo/criar_aula.html', {'cursos': cursos})
+
+        # Se passou todas as validações
         Aula.objects.create(
             title=title,
             description=description,

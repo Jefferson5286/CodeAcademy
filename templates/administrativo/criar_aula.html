@@ -82,5 +82,12 @@
       ← Voltar para Lista de Aulas
     </a>
   </div>
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        </script>
+    {% endif %}
 </body>
 </html>
