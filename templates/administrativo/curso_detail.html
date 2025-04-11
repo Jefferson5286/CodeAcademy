@@ -1,0 +1,105 @@
+<!-- curso_detail.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Curso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 900px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .actions a {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        .actions a:hover {
+            background: #0069d9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        table th, table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        table tr:hover {
+            background: #f1f1f1;
+        }
+        .empty {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>{{ curso.title }}</h1>
+    <p>{{ curso.description }}</p>
+
+    <div class="actions">
+        <a href="{% url 'criar_aula' %}?curso_id={{ curso.id }}">➕ Adicionar Nova Aula</a>
+        <a href="{% url 'ver_aulas' %}">📚 Ver Todas Aulas</a>
+    </div>
+
+    <h2>Aulas deste Curso:</h2>
+
+    {% if aulas %}
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Ordem</th>
+                <th>Criado em</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aula in aulas %}
+            <tr>
+                <td><a href="{% url 'ver_aula' aula.id %}">{{ aula.title }}</a></td>
+                <td>{{ aula.order }}</td>
+                <td>{{ aula.created }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">Nenhuma aula adicionada a este curso ainda.</div>
+    {% endif %}
+</div>
+
+</body>
+</html>

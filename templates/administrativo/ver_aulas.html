@@ -1,0 +1,123 @@
+<!-- ver_aulas.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Aulas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 900px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .actions a, .actions button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .actions a:hover, .actions button:hover {
+            background: #0069d9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        table tr:hover {
+            background: #f1f1f1;
+        }
+        .btn-delete {
+            background: #dc3545;
+        }
+        .btn-delete:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Gerenciar Aulas</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="actions">
+            <a href="{% url 'criar_aula' %}">➕ Criar Nova Aula</a>
+            <button type="submit" class="btn-delete">🗑️ Excluir Selecionadas</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>Título</th>
+                    <th>Curso</th>
+                    <th>Ordem</th>
+                    <th>Criado em</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aula in page_obj %}
+                <tr>
+                    <td><input type="checkbox" name="aula_ids" value="{{ aula.id }}"></td>
+                    <td><a href="{% url 'ver_aula' aula.id %}">{{ aula.title }}</a></td>
+                    <td>
+                        {% if aula.curso %}
+                            {{ aula.curso.title }}
+                        {% else %}
+                            ---
+                        {% endif %}
+                    </td>
+                    <td>{{ aula.order }}</td>
+                    <td>{{ aula.created }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">Nenhuma aula cadastrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </form>
+</div>
+
+
+<script>
+    const selectAll = document.getElementById('select-all');
+
+    selectAll.addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('input[name="aula_ids"]');
+        checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+    });
+</script>
+
+</body>
+</html>

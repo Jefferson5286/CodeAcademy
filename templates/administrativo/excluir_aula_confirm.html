@@ -1,0 +1,75 @@
+<!-- excluir_aula_confirm.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Exclusão da Aula</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8d7da;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #721c24;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button, a {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn-cancelar {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-cancelar:hover {
+            background: #5a6268;
+        }
+        .btn-excluir {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-excluir:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Confirmar Exclusão</h1>
+
+    <p>Tem certeza que deseja excluir a aula <strong>"{{ aula.title }}"</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-excluir">Sim, Excluir</button>
+        <a href="{% url 'ver_aulas' %}" class="btn-cancelar">Cancelar</a>
+    </form>
+</div>
+
+</body>
+</html>

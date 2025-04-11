@@ -1,0 +1,51 @@
+<!-- painel_administrativo.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Administrativo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Painel Administrativo</h1>
+
+    <a href="{% url 'ver_cursos' %}">Gerenciar Cursos</a>
+    <a href="{% url 'ver_aulas' %}">Gerenciar Aulas</a>
+    <a href="{% url 'criar_curso' %}">Criar Novo Curso</a>
+    <a href="{% url 'criar_aula' %}">Criar Nova Aula</a>
+</div>
+
+</body>
+</html>
