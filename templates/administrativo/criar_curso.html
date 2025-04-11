@@ -2,85 +2,56 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Criar Curso</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f2f5;
-            padding: 40px;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 600px;
-            margin: auto;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        label {
-            font-weight: bold;
-        }
-        input, textarea {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: vertical;
-        }
-        button {
-            background: #28a745;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #218838;
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Criar Curso</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
 
-<div class="container">
-    <h1>Criar Novo Curso</h1>
+  <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
+      <a class="block text-green-600 font-bold hover:underline" href="{% url 'painel_administrativo' %}">← Voltar para o menu principal</a>
+    <h1 class="text-3xl font-bold text-center mb-6">Criar Novo Curso</h1>
 
-    <form method="post">
-        {% csrf_token %}
+    <form method="post" class="flex flex-col gap-4">
+      {% csrf_token %}
 
-        <label for="title">Título do Curso:</label>
-        <input type="text" id="title" name="title" required>
+      <div>
+        <label for="title" class="block font-semibold mb-1">Título do Curso:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
 
-        <label for="description">Descrição:</label>
-        <textarea id="description" name="description" rows="5" required></textarea>
+      <div>
+        <label for="description" class="block font-semibold mb-1">Descrição:</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="5"
+          required
+          class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        ></textarea>
+      </div>
 
-        <button type="submit">Salvar Curso</button>
+      <button
+        type="submit"
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors"
+      >
+        Salvar Curso
+      </button>
     </form>
 
-    <a class="back-link" href="{% url 'ver_cursos' %}">← Voltar para Lista de Cursos</a>
-</div>
+    <a
+      href="{% url 'ver_cursos' %}"
+      class="block text-center mt-6 text-blue-600 hover:underline font-semibold"
+    >
+      ← Voltar para Lista de Cursos
+    </a>
+  </div>
 
 </body>
 </html>

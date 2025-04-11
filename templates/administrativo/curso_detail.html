@@ -4,100 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalhes do Curso</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 40px;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 900px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        p {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #666;
-        }
-        .actions {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .actions a {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin: 0 10px;
-        }
-        .actions a:hover {
-            background: #0069d9;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-        }
-        table th, table td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        table tr:hover {
-            background: #f1f1f1;
-        }
-        .empty {
-            text-align: center;
-            color: #999;
-            padding: 20px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
 
-<div class="container">
-    <h1>{{ curso.title }}</h1>
-    <p>{{ curso.description }}</p>
+<div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-6xl">
+    <a class="block text-green-600 font-bold hover:underline" href="{% url 'painel_administrativo' %}">← Voltar para o menu principal</a>
 
-    <div class="actions">
-        <a href="{% url 'criar_aula' %}?curso_id={{ curso.id }}">➕ Adicionar Nova Aula</a>
-        <a href="{% url 'ver_aulas' %}">📚 Ver Todas Aulas</a>
+    <h1 class="text-3xl font-bold text-center mb-2">{{ curso.title }}</h1>
+    <p class="text-gray-500 text-center mb-8">{{ curso.description }}</p>
+
+    <div class="flex justify-center gap-4 mb-8">
+        <a href="{% url 'criar_aula' %}?curso_id={{ curso.id }}"
+           class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-xl transition">
+            ➕ Adicionar Aula
+        </a>
+        <a href="{% url 'ver_aulas' %}"
+           class="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-5 rounded-xl transition">
+            📚 Ver Todas
+        </a>
     </div>
 
-    <h2>Aulas deste Curso:</h2>
+    <h2 class="text-2xl font-semibold mb-6">Aulas deste Curso:</h2>
 
     {% if aulas %}
-    <table>
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Ordem</th>
-                <th>Criado em</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for aula in aulas %}
-            <tr>
-                <td><a href="{% url 'ver_aula' aula.id %}">{{ aula.title }}</a></td>
-                <td>{{ aula.order }}</td>
-                <td>{{ aula.created }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <form method="post" action="{% url 'excluir_aulas_selecionadas' %}">
+        {% csrf_token %}
+        <input type="hidden" name="curso_id" value="{{ curso.id }}">
+
+        <div class="overflow-x-auto rounded-xl shadow-sm mb-4">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-100 text-gray-700 text-left text-sm uppercase">
+                    <tr>
+                        <th class="py-3 px-4">
+                            <input type="checkbox" id="select-all" class="accent-green-500">
+                        </th>
+                        <th class="py-3 px-6">Título</th>
+                        <th class="py-3 px-6">Ordem</th>
+                        <th class="py-3 px-6">Criado em</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600">
+                    {% for aula in aulas %}
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="py-4 px-4">
+                            <input type="checkbox" name="aula_ids" value="{{ aula.id }}" class="accent-green-500">
+                        </td>
+                        <td class="py-4 px-6">
+                            <a href="{% url 'ver_aula' aula.id %}" class="text-blue-600 hover:underline font-medium">
+                                {{ aula.title }}
+                            </a>
+                        </td>
+                        <td class="py-4 px-6">{{ aula.order }}</td>
+                        <td class="py-4 px-6">{{ aula.created|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-xl transition">
+                🗑️ Excluir Selecionados
+            </button>
+
+            <!-- Paginação -->
+            <div class="flex gap-2">
+                {% if aulas.has_previous %}
+                <a href="?page={{ aulas.previous_page_number }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded-lg">← Anterior</a>
+                {% endif %}
+
+                <span class="font-semibold text-gray-600 py-2 px-4">{{ aulas.number }} / {{ aulas.paginator.num_pages }}</span>
+
+                {% if aulas.has_next %}
+                <a href="?page={{ aulas.next_page_number }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded-lg">Próximo →</a>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('select-all').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('input[name="aula_ids"]');
+            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+        });
+    </script>
+
     {% else %}
-    <div class="empty">Nenhuma aula adicionada a este curso ainda.</div>
+    <div class="text-center text-gray-400 py-10">
+        Nenhuma aula adicionada a este curso ainda.
+    </div>
     {% endif %}
 </div>
 

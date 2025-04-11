@@ -17,4 +17,6 @@ urlpatterns = [
     path('administrativo/aulas/<uuid:aula_id>/editar/', views.editar_aula, name='editar_aula'),
     path('administrativo/aulas/excluir/', views.excluir_aulas, name='excluir_aulas'),
     path('administrativo/aulas/<uuid:aula_id>/excluir/', views.excluir_aula, name='excluir_aula'),
+
+    path('excluir-aulas/', views.excluir_aulas_selecionadas, name='excluir_aulas_selecionadas'),
 ]

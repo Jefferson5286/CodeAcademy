@@ -42,7 +42,11 @@ def ver_aulas(request):
 # Página de um Curso Específico
 def curso_detail(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
-    aulas = Aula.objects.filter(curso=curso).order_by('order')
+    aulas_list = Aula.objects.filter(curso=curso).order_by('order')
+
+    paginator = Paginator(aulas_list, 10)  # 10 aulas por página
+    page_number = request.GET.get('page')
+    aulas = paginator.get_page(page_number)
 
     return render(request, 'administrativo/curso_detail.html', {'curso': curso, 'aulas': aulas})
 
@@ -68,7 +72,7 @@ def criar_aula(request):
     cursos = Curso.objects.all()
 
     if request.method == 'POST':
-        print(request.POST.keys())
+        print(request.POST.dict())
 
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -133,3 +137,14 @@ def excluir_aula(request, aula_id):
         return redirect('ver_aulas')
 
     return render(request, 'administrativo/excluir_aula_confirm.html', {'aula': aula})
+
+
+def excluir_aulas_selecionadas(request):
+    if request.method == 'POST':
+        aula_ids = request.POST.getlist('aula_ids')
+        curso_id = request.POST.get('curso_id')
+
+        if aula_ids:
+            Aula.objects.filter(id__in=aula_ids).delete()
+
+        return redirect('ver_curso', curso_id=curso_id)

@@ -2,99 +2,85 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Criar Aula</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f2f5;
-            padding: 40px;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 700px;
-            margin: auto;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        label {
-            font-weight: bold;
-        }
-        input, textarea, select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: vertical;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #28a745;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <title>Criar Aula</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<div class="container">
-    <h1>Criar Nova Aula</h1>
+  {% load static %}
+
+  <!--suppress JSUnresolvedReference -->
+    <script type="module">
+    import {InitRealtimeMarkdownRender} from "{% static 'markdown-render/markdown-render-realtime.js' %}"
+
+    window.onload = function() {
+        const content = document.getElementById('content')
+        const preview = document.getElementById('preview')
+
+        InitRealtimeMarkdownRender(content, preview)
+    }
+  </script>
+
+  <!--suppress CssUnusedSymbol -->
+    <style>
+    .highlight {
+      background-color: #d0d0d0;
+      padding: 2px;
+      border-radius: 5px;
+      opacity: 80%;
+      font-size: 11pt;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white shadow-lg rounded-2xl p-8 max-w-4xl w-full space-y-8">
+<a class="block text-green-600 font-bold hover:underline" href="{% url 'painel_administrativo' %}">← Voltar para o menu principal</a>
+    <header class="text-center">
+      <h1 class="text-3xl font-bold text-gray-800">Criar Nova Aula</h1>
+    </header>
 
     <form method="post">
-        {% csrf_token %}
+      {% csrf_token %}
 
-        <label for="title">Título da Aula:</label>
-        <input type="text" id="title" name="title" required>
+      <div class="flex flex-col space-y-4">
+        <label for="title" class="font-semibold text-gray-700">Título da Aula:</label>
+        <input type="text" id="title" name="title" required
+               class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500">
 
-        <label for="description">Descrição:</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
+        <label for="description" class="font-semibold text-gray-700">Descrição:</label>
+        <textarea id="description" name="description" rows="3" required class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
 
-        <label for="content">Conteúdo:</label>
-        <textarea id="content" name="content" rows="6" required></textarea>
-
-        <label for="curso">Curso (opcional):</label>
-        <select id="curso" name="curso">
-            <option value="">-- Sem Curso --</option>
-            {% for curso in cursos %}
-                <option value="{{ curso.id }}">{{ curso.title }}</option>
-            {% endfor %}
+        <label for="curso" class="font-semibold text-gray-700">Curso (opcional):</label>
+        <select id="curso" name="curso"
+                class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option value="">-- Sem Curso --</option>
+          {% for curso in cursos %}
+            <option value="{{ curso.id }}">{{ curso.title }}</option>
+          {% endfor %}
         </select>
 
-        <label for="order">Ordem (opcional):</label>
-        <input type="number" id="order" name="order" min="0">
+        <label for="order" class="font-semibold text-gray-700">Ordem (opcional):</label>
+        <input type="number" id="order" name="order" min="0"
+               class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500">
 
-        <button type="submit">Salvar Aula</button>
+        <label for="content" class="font-semibold text-gray-700">Conteúdo (Markdown):</label>
+        <textarea id="content" contenteditable="true" name="content" required
+             class="border border-gray-300 rounded-lg p-4 min-h-[200px] font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 overflow-auto"></textarea>
+
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-all font-bold">
+          Salvar Aula
+        </button>
+      </div>
     </form>
 
-    <a class="back-link" href="{% url 'ver_aulas' %}">← Voltar para Lista de Aulas</a>
-</div>
+    <div class="mt-10">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Preview</h2>
+      <div id="preview" class="prose prose-lg max-w-none"></div>
+    </div>
 
+    <a class="block text-center text-green-600 mt-6 font-bold hover:underline" href="{% url 'ver_aulas' %}">
+      ← Voltar para Lista de Aulas
+    </a>
+  </div>
 </body>
 </html>

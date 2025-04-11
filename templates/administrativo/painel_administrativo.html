@@ -2,50 +2,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Painel Administrativo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 40px;
-            text-align: center;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            display: inline-block;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        a {
-            display: inline-block;
-            margin: 10px;
-            padding: 15px 25px;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        a:hover {
-            background: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Painel Administrativo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
 
-<div class="container">
-    <h1>Painel Administrativo</h1>
+  <div class="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md text-center">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Painel Administrativo</h1>
 
-    <a href="{% url 'ver_cursos' %}">Gerenciar Cursos</a>
-    <a href="{% url 'ver_aulas' %}">Gerenciar Aulas</a>
-    <a href="{% url 'criar_curso' %}">Criar Novo Curso</a>
-    <a href="{% url 'criar_aula' %}">Criar Nova Aula</a>
-</div>
+    <div class="flex flex-col gap-4">
+      <a href="{% url 'ver_cursos' %}" class="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2">
+        📚 Gerenciar Cursos
+      </a>
+      <a href="{% url 'ver_aulas' %}" class="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2">
+        🎥 Gerenciar Aulas
+      </a>
+      <a href="{% url 'criar_curso' %}" class="px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2">
+        ➕ Criar Novo Curso
+      </a>
+      <a href="{% url 'criar_aula' %}" class="px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2">
+        ➕ Criar Nova Aula
+      </a>
+    </div>
+  </div>
 
 </body>
 </html>
