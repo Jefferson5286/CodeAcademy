@@ -1,0 +1,11 @@
+.venv
+.idea
+exclude
+node_modules
+http_test
+
+*.pyc
+*.min.css
+
+db.sqlite3
+.env
