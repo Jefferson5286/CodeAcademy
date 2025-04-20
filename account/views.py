@@ -3,7 +3,6 @@ from typing import AnyStr, Dict
 
 from django.core.mail import send_mail
 from django.conf import settings
-from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from django.urls import reverse
 from django.contrib.auth import authenticate
 from rest_framework import status
@@ -15,8 +14,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from account.serializers import RegisterSerializer
 from account.models import UserModel
 from core.cache import user_registration_cache, magic_link_cache
-
-signer = TimestampSigner()
 
 
 class RegisterView(APIView):

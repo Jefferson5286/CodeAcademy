@@ -9,6 +9,8 @@ class UserModel(AbstractUser):
     nome_completo = models.CharField(max_length=255)
     cpf = models.CharField(null=True, blank=True, max_length=11)
 
+    is_tutor = models.BooleanField(default=False)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
